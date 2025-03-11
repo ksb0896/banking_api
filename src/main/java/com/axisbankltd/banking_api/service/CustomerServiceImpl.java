@@ -1,6 +1,7 @@
 package com.axisbankltd.banking_api.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,31 +14,31 @@ public class CustomerServiceImpl implements CustomerService{
 	private CustomerRepository customerRepository;
 	@Override
 	public Customer createCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepository.save(customer);
 	}
-
+	
 	@Override
 	public Customer getCustomerById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Customer not found!"));
 	}
 
 	@Override
 	public List<Customer> getAllCustomers() {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepository.findAll();
 	}
 
 	@Override
 	public Customer updateCustomer(Long id, Customer customer) {
-		// TODO Auto-generated method stub
-		return null;
+		Customer existingCustomer = getCustomerById(id);
+		existingCustomer.setName(customer.getName());
+		existingCustomer.setEmail(customer.getEmail());
+		existingCustomer.setPhoneNumber(customer.getPhoneNumber());
+		return customerRepository.save(existingCustomer);
 	}
 
 	@Override
 	public void deleteCustomer(Long id) {
-		// TODO Auto-generated method stub
+		customerRepository.deleteById(id);
 		
 	}
 
