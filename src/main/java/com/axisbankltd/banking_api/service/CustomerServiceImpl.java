@@ -10,18 +10,19 @@ import com.axisbankltd.banking_api.model.Customer;
 import com.axisbankltd.banking_api.repository.CustomerRepository;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
 	@Override
 	public Customer createCustomer(Customer customer) {
 		return customerRepository.save(customer);
 	}
-	
+
 	@Override
 	public Customer getCustomerById(Long id) {
-		return customerRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Customer not found!"));
+		return customerRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Customer not found!"));
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void deleteCustomer(Long id) {
 		customerRepository.deleteById(id);
-		
+
 	}
 
 }
