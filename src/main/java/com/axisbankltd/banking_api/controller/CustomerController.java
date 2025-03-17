@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,12 @@ import jakarta.validation.Valid;
 public class CustomerController {
 	
 	@Autowired
-	private CustomerService customerService;
+	private final CustomerService customerService;
+	
+	@Autowired
+	public CustomerController(CustomerService customerService) {
+		this.customerService = customerService;
+	}
 	
 	@GetMapping("/getCustomerById/{id}")
 	public ResponseEntity<Customer> getCustomerById(@Valid @PathVariable Long id){
@@ -31,19 +37,15 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/updateCustomerById/{id}")
-	public ResponseEntity<?> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer, BindingResult bindingResult){
-		if(bindingResult.hasErrors()) {
-			return ResponseEntity.badRequest().body(bindingResult.getFieldErrors());
-		}
-		try {
-			
-		}catch() {
-			
-		}
+	public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer){
+		return ResponseEntity.ok(customerService.updateCustomer(id, customer));
 		
-		
-		return null;
-		
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id){
+		customerService.deleteCustomer(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping
