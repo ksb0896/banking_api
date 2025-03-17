@@ -22,50 +22,51 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
-	
+
 	@Autowired
 	private final CustomerService customerService;
-	
+
 	@Autowired
 	public CustomerController(CustomerService customerService) {
 		this.customerService = customerService;
 	}
-	
+
 	@GetMapping("/getCustomerById/{id}")
-	public ResponseEntity<Customer> getCustomerById(@Valid @PathVariable Long id){
+	public ResponseEntity<Customer> getCustomerById(@Valid @PathVariable Long id) {
 		return ResponseEntity.ok(customerService.getCustomerById(id));
 	}
-	
+
 	@PutMapping("/updateCustomerById/{id}")
-	public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer){
+	public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer) {
 		return ResponseEntity.ok(customerService.updateCustomer(id, customer));
-		
+
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id){
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
 		customerService.deleteCustomer(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult){
-		if(bindingResult.hasErrors()) {
+	public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			return ResponseEntity.badRequest().body(bindingResult.getFieldErrors());
 		}
-		
+
 		try {
 			Customer createdCustomer = customerService.createCustomer(customer);
 			return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
 		} catch (DataIntegrityViolationException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Customer with same email ID exists");
-		} catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occured while creating the customer");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("An error occured while creating the customer");
 		}
 		/*
 		 * return new ResponseEntity<>(customerService.createCustomer(customer),
 		 * HttpStatus.CREATED);
 		 */
-		
+
 	}
 }
