@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.axisbankltd.banking_api.model.Customer;
 import com.axisbankltd.banking_api.repository.CustomerRepository;
 
+@Service
 public class CustomerServiceImpl implements CustomerService{
 
 	@Autowired
