@@ -20,7 +20,6 @@ public class Customer {
 	private String email;
 	
 	@Size(min = 10, max = 10, message = "Phone number should be 10 digits")
-	@NotBlank(message = "Email cannot be blank")
 	private String phoneNumber;
 	
 	//constructor
