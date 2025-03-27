@@ -3,7 +3,6 @@ package com.axisbankltd.banking_api.service;
 import java.util.List;
 
 import com.axisbankltd.banking_api.dto.CustomerDto;
-//import com.axisbankltd.banking_api.model.Customer;
 
 public interface CustomerService {
 	
