@@ -6,23 +6,28 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.axisbankltd.banking_api.dto.CustomerDto;
 import com.axisbankltd.banking_api.model.Customer;
 import com.axisbankltd.banking_api.repository.CustomerRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
-	@Autowired
 	private CustomerRepository customerRepository;
 
+	@Autowired
+	public CustomerServiceImpl(CustomerRepository customerRepository) {
+		this.customerRepository = customerRepository;
+	}
+
 	@Override
-	public Customer createCustomer(Customer customer) {
-		return customerRepository.save(customer);
+	public CustomerDto createCustomer(CustomerDto customerDto) {
+		Customer customer = new Customer();
+		return customerDto.save(customerDto);
 	}
 
 	@Override
 	public Customer getCustomerById(Long id) {
-		return customerRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Customer not found!"));
+		return customerRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Customer Not Found!!"));
 	}
 
 	@Override
@@ -31,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer updateCustomer(Long id, Customer customer) {
+	public Customer updateCustomer(Long id, CustomerDto customer) {
 		Customer existingCustomer = getCustomerById(id);
 		existingCustomer.setName(customer.getName());
 		existingCustomer.setEmail(customer.getEmail());
@@ -42,7 +47,8 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void deleteCustomer(Long id) {
 		customerRepository.deleteById(id);
-
+		
 	}
+
 
 }
